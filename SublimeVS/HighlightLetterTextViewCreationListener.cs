@@ -15,22 +15,13 @@ namespace SublimeVS
     /// Establishes an <see cref="IAdornmentLayer"/> to place the adornment on and exports the <see cref="IWpfTextViewCreationListener"/>
     /// that instantiates the adornment on the event of a <see cref="IWpfTextView"/>'s creation
     /// </summary>
-    [Export(typeof(IWpfTextViewCreationListener))]
+    [Export(typeof(IVsTextViewCreationListener))]
     [ContentType("text")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     internal sealed class HighlightLetterTextViewCreationListener : IVsTextViewCreationListener
     {
         // Disable "Field is never assigned to..." and "Field is never used" compiler's warnings. Justification: the field is used by MEF.
 #pragma warning disable 649, 169
-
-        /// <summary>
-        /// Defines the adornment layer for the adornment. This layer is ordered
-        /// after the selection layer in the Z-order
-        /// </summary>
-        [Export(typeof(AdornmentLayerDefinition))]
-        [Name("HighlightLetter")]
-        [Order(After = PredefinedAdornmentLayers.Selection, Before = PredefinedAdornmentLayers.Text)]
-        private AdornmentLayerDefinition editorAdornmentLayer;
 
         [Import]
         private IVsEditorAdaptersFactoryService EditorAdaptersFactoryService { get; set; }
@@ -59,7 +50,7 @@ namespace SublimeVS
             IWpfTextView textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
 
             // The adornment will listen to any event that changes the layout (text changes, scrolling, etc)
-            //var highlightLetter = new HighlightLetter(textView);
+            var highlightLetter = new HighlightLetter(textView);
 
             CommandFilter commandFilter = new CommandFilter(textView, _aggregatorFactory, _globalServiceProvider, _editorOperationsFactory);
             //CommandFilter commandFilter = new CommandFilter(textView);

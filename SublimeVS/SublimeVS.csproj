@@ -58,6 +58,8 @@
     <Compile Include="JumpToLetter.cs" />
     <Compile Include="JumpToLetterPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextAdornment1.cs" />
+    <Compile Include="TextAdornment1TextViewCreationListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
