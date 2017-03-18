@@ -85,15 +85,9 @@ namespace SublimeVS
 
         private int HandleJumpToLetter(IWpfTextView textView, IClassifier classifier, IOleCommandTarget oleCommandTarget, IEditorOperations editorOperations)
         {
-            jumpToLetterMode = !jumpToLetterMode;
-            if (jumpToLetterMode)
-            {
-                if (HighlightLetter == null) HighlightLetter = new HighlightLetter(textView);
-            }
-            else
-            {
-                if (HighlightLetter != null) HighlightLetter = null;
-            }
+            HighlightLetter.isActive = !HighlightLetter.isActive;
+            HighlightLetter layer = textView.Properties["HighlightLetterLayer"] as HighlightLetter;
+            layer.ActivateFeature();
             return VSConstants.S_OK;
         }
 
