@@ -99,6 +99,17 @@ namespace SublimeVS
             isWaitingToJump = true;
         }
 
+        internal void JumpToChosenPosition(char typedChar)
+        {
+            if (isActive && isWaitingToJump)
+            {
+                int newPosition = (int)(typedChar - 'A'); // TODO: Get this from the typedChar
+                // Jump to the correct position
+                this.view.Caret.MoveTo(new SnapshotPoint(this.view.TextSnapshot, newPosition));
+                DeactivateFeature();
+            }
+        }
+
         /// <summary>
         /// Adds the scarlet box behind the 'a' characters within the given line
         /// </summary>
@@ -144,5 +155,6 @@ namespace SublimeVS
         {
             this.layer.RemoveAllAdornments();
         }
+
     }
 }

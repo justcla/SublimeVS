@@ -48,14 +48,22 @@ namespace SublimeVS
 
             if (HighlightLetter.isActive)
             {
-                char typedChar = char.MinValue;
-
                 if (pguidCmdGroup == VSConstants.VSStd2K && nCmdID == (uint)VSConstants.VSStd2KCmdID.TYPECHAR)
                 {
-                    typedChar = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
-                    return HandleSelectLetterToHighlight(textView, typedChar, classifier, GetShellCommandDispatcher(), editorOperations);
+                    char typedChar = char.MinValue;
+                    if (!HighlightLetter.isWaitingToJump)  // Must be waiting for selection of letter to highlight
+                    {
+                        typedChar = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
+                        return HandleSelectLetterToHighlight(textView, typedChar, classifier, GetShellCommandDispatcher(), editorOperations);
+                    }
+                    else // must be waiting to jump
+                    {
+                        typedChar = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
+                        return HandleGoToChosenPosition(textView, typedChar, classifier, GetShellCommandDispatcher(), editorOperations);
+                    }
                 }
             }
+
 
             // No commands called. Pass to next command handler.
             if (Next != null)
@@ -114,6 +122,16 @@ namespace SublimeVS
             if (HighlightLetter.isActive)
             {
                 highlightLetterController.HighlightLetters(typedChar);
+            }
+            return VSConstants.S_OK;
+        }
+
+        private int HandleGoToChosenPosition(IWpfTextView textView, char typedChar, IClassifier classifier, IOleCommandTarget oleCommandTarget, IEditorOperations editorOperations)
+        {
+            HighlightLetter highlightLetterController = textView.Properties["HighlightLetterLayer"] as HighlightLetter;
+            if (HighlightLetter.isActive)
+            {
+                highlightLetterController.JumpToChosenPosition(typedChar);
             }
             return VSConstants.S_OK;
         }
