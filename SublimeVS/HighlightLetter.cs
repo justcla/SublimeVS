@@ -13,6 +13,7 @@ namespace SublimeVS
     internal sealed class HighlightLetter
     {
         internal static bool isActive = false;
+        internal static bool isWaitingToJump = false;
 
         /// <summary>
         /// The layer of the adornment.
@@ -70,9 +71,15 @@ namespace SublimeVS
         /// <param name="e">The event arguments.</param>
         internal void TurnOffAndCancel(object sender, TextViewLayoutChangedEventArgs e)
         {
+            DeactivateFeature();
+        }
+
+        internal void DeactivateFeature()
+        {
             if (isActive)
             {
                 isActive = false;
+                isWaitingToJump = false;
                 ClearVisuals();
             }
         }
@@ -80,16 +87,23 @@ namespace SublimeVS
         internal void ActivateFeature()
         {
             isActive = true;
-            this.CreateVisuals();
+            isWaitingToJump = false;
+            //this.CreateVisuals();
             // If the layout changes (ie. scroll) then cancel the feature
-            this.view.LayoutChanged += this.TurnOffAndCancel;
+            //this.view.LayoutChanged += this.TurnOffAndCancel;
+        }
+
+        internal void HighlightLetters(char letterToHighlight)
+        {
+            CreateVisuals(letterToHighlight);
+            isWaitingToJump = true;
         }
 
         /// <summary>
         /// Adds the scarlet box behind the 'a' characters within the given line
         /// </summary>
         /// <param name="line">Line to add the adornments</param>
-        private void CreateVisuals()
+        private void CreateVisuals(char letterToHighlight)
         {
             IWpfTextViewLineCollection textViewLines = this.view.TextViewLines;
 
@@ -98,7 +112,7 @@ namespace SublimeVS
                 // Loop through each character, and place a box around any 'a'
                 for (int charIndex = line.Start; charIndex < line.End; charIndex++)
                 {
-                    if (this.view.TextSnapshot[charIndex] == 'a')
+                    if (this.view.TextSnapshot[charIndex] == letterToHighlight)
                     {
                         SnapshotSpan span = new SnapshotSpan(this.view.TextSnapshot, Span.FromBounds(charIndex, charIndex + 1));
                         Geometry geometry = textViewLines.GetMarkerGeometry(span);

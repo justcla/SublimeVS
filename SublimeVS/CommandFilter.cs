@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
 using System;
+using System.Runtime.InteropServices;
 using OLEConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 
 namespace SublimeVS
@@ -42,6 +43,17 @@ namespace SublimeVS
                 {
                     case Constants.JumpToLetterCmdId:
                         return HandleJumpToLetter(textView, classifier, GetShellCommandDispatcher(), editorOperations);
+                }
+            }
+
+            if (HighlightLetter.isActive)
+            {
+                char typedChar = char.MinValue;
+
+                if (pguidCmdGroup == VSConstants.VSStd2K && nCmdID == (uint)VSConstants.VSStd2KCmdID.TYPECHAR)
+                {
+                    typedChar = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
+                    return HandleSelectLetterToHighlight(textView, typedChar, classifier, GetShellCommandDispatcher(), editorOperations);
                 }
             }
 
@@ -85,9 +97,24 @@ namespace SublimeVS
 
         private int HandleJumpToLetter(IWpfTextView textView, IClassifier classifier, IOleCommandTarget oleCommandTarget, IEditorOperations editorOperations)
         {
-            HighlightLetter.isActive = !HighlightLetter.isActive;
-            HighlightLetter layer = textView.Properties["HighlightLetterLayer"] as HighlightLetter;
-            layer.ActivateFeature();
+            HighlightLetter highlightLetterController = textView.Properties["HighlightLetterLayer"] as HighlightLetter;
+            if (!HighlightLetter.isActive)
+            {
+                highlightLetterController.ActivateFeature();
+            } else
+            {
+                highlightLetterController.DeactivateFeature();
+            }
+            return VSConstants.S_OK;
+        }
+
+        private int HandleSelectLetterToHighlight(IWpfTextView textView, char typedChar, IClassifier classifier, IOleCommandTarget oleCommandTarget, IEditorOperations editorOperations)
+        {
+            HighlightLetter highlightLetterController = textView.Properties["HighlightLetterLayer"] as HighlightLetter;
+            if (HighlightLetter.isActive)
+            {
+                highlightLetterController.HighlightLetters(typedChar);
+            }
             return VSConstants.S_OK;
         }
 
