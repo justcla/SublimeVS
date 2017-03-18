@@ -12,6 +12,8 @@ namespace SublimeVS
     /// </summary>
     internal sealed class HighlightLetter
     {
+        internal static bool isActive = false;
+
         /// <summary>
         /// The layer of the adornment.
         /// </summary>
@@ -46,7 +48,6 @@ namespace SublimeVS
             this.layer = view.GetAdornmentLayer("HighlightLetter");
 
             this.view = view;
-            this.view.LayoutChanged += this.OnLayoutChanged;
 
             // Create the pen and brush to color the box behind the a's
             this.brush = new SolidColorBrush(Color.FromArgb(0x20, 0x00, 0x00, 0xff));
@@ -67,50 +68,67 @@ namespace SublimeVS
         /// </remarks>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        internal void OnLayoutChanged(object sender, TextViewLayoutChangedEventArgs e)
+        internal void TurnOffAndCancel(object sender, TextViewLayoutChangedEventArgs e)
         {
-            foreach (ITextViewLine line in e.NewOrReformattedLines)
+            if (isActive)
             {
-                this.CreateVisuals(line);
+                isActive = false;
+                ClearVisuals();
             }
+        }
+
+        internal void ActivateFeature()
+        {
+            isActive = true;
+            this.CreateVisuals();
+            // If the layout changes (ie. scroll) then cancel the feature
+            this.view.LayoutChanged += this.TurnOffAndCancel;
         }
 
         /// <summary>
         /// Adds the scarlet box behind the 'a' characters within the given line
         /// </summary>
         /// <param name="line">Line to add the adornments</param>
-        private void CreateVisuals(ITextViewLine line)
+        private void CreateVisuals()
         {
             IWpfTextViewLineCollection textViewLines = this.view.TextViewLines;
 
-            // Loop through each character, and place a box around any 'a'
-            for (int charIndex = line.Start; charIndex < line.End; charIndex++)
+            foreach (ITextViewLine line in this.view.TextViewLines)
             {
-                if (this.view.TextSnapshot[charIndex] == 'a')
+                // Loop through each character, and place a box around any 'a'
+                for (int charIndex = line.Start; charIndex < line.End; charIndex++)
                 {
-                    SnapshotSpan span = new SnapshotSpan(this.view.TextSnapshot, Span.FromBounds(charIndex, charIndex + 1));
-                    Geometry geometry = textViewLines.GetMarkerGeometry(span);
-                    if (geometry != null)
+                    if (this.view.TextSnapshot[charIndex] == 'a')
                     {
-                        var drawing = new GeometryDrawing(this.brush, this.pen, geometry);
-                        drawing.Freeze();
-
-                        var drawingImage = new DrawingImage(drawing);
-                        drawingImage.Freeze();
-
-                        var image = new Image
+                        SnapshotSpan span = new SnapshotSpan(this.view.TextSnapshot, Span.FromBounds(charIndex, charIndex + 1));
+                        Geometry geometry = textViewLines.GetMarkerGeometry(span);
+                        if (geometry != null)
                         {
-                            Source = drawingImage,
-                        };
+                            var drawing = new GeometryDrawing(this.brush, this.pen, geometry);
+                            drawing.Freeze();
 
-                        // Align the image with the top of the bounds of the text geometry
-                        Canvas.SetLeft(image, geometry.Bounds.Left);
-                        Canvas.SetTop(image, geometry.Bounds.Top);
+                            var drawingImage = new DrawingImage(drawing);
+                            drawingImage.Freeze();
 
-                        this.layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, span, null, image, null);
+                            var image = new Image
+                            {
+                                Source = drawingImage,
+                            };
+
+                            // Align the image with the top of the bounds of the text geometry
+                            Canvas.SetLeft(image, geometry.Bounds.Left);
+                            Canvas.SetTop(image, geometry.Bounds.Top);
+
+                            this.layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, span, null, image, null);
+                        }
                     }
                 }
             }
+        }
+
+        private void ClearVisuals()
+        {
+            this.layer.RemoveAllAdornments();
         }
     }
 }

@@ -22,6 +22,14 @@ namespace SublimeVS
     {
         // Disable "Field is never assigned to..." and "Field is never used" compiler's warnings. Justification: the field is used by MEF.
 #pragma warning disable 649, 169
+        /// <summary>
+        /// Defines the adornment layer for the adornment. This layer is ordered
+        /// after the selection layer in the Z-order
+        /// </summary>
+        [Export(typeof(AdornmentLayerDefinition))]
+        [Name("HighlightLetter")]
+        [Order(After = PredefinedAdornmentLayers.Selection, Before = PredefinedAdornmentLayers.Text)]
+        private AdornmentLayerDefinition editorAdornmentLayer;
 
         [Import]
         private IVsEditorAdaptersFactoryService EditorAdaptersFactoryService { get; set; }
@@ -48,9 +56,8 @@ namespace SublimeVS
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
             IWpfTextView textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
-
             // The adornment will listen to any event that changes the layout (text changes, scrolling, etc)
-            var highlightLetter = new HighlightLetter(textView);
+            textView.Properties.AddProperty("HighlightLetterLayer", new HighlightLetter(textView));
 
             CommandFilter commandFilter = new CommandFilter(textView, _aggregatorFactory, _globalServiceProvider, _editorOperationsFactory);
             //CommandFilter commandFilter = new CommandFilter(textView);
