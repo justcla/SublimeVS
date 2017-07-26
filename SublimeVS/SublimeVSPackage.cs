@@ -1,0 +1,139 @@
+﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using EnvDTE80;
+using EnvDTE;
+using Microsoft.VisualStudio.Settings;
+using System.Windows.Forms;
+
+namespace SublimeVS
+{
+    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [Guid(SublimeVSPackage.PackageGuidString)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    public sealed class SublimeVSPackage : Package
+    {
+        public const string PackageGuidString = "b303a85f-1765-435e-8b09-b600853edbef";
+        private const string SID_SVsSettingsPersistenceManager = "9B164E40-C3A2-4363-9BC5-EB4039DEF653";
+
+        public static ISettingsManager SettingsManager { get; private set; }
+
+        public SublimeVSPackage()
+        {
+        }
+
+        /// <summary>
+        /// Initialization of the package; this method is called right after the package is sited, so this is the place
+        /// where you can put all the initialization code that rely on services provided by VisualStudio.
+        /// </summary>
+        protected override void Initialize()
+        {
+            SublimeVSPackage.SettingsManager = (ISettingsManager)GetGlobalService(typeof(SVsSettingsPersistenceManager));
+            base.Initialize();
+
+            // Check if we need to do first-time setup
+            const string firstTimeRunSettingName = "SublimeSettingsPrompted6";
+            if ((SublimeVSPackage.SettingsManager.TryGetValue(firstTimeRunSettingName, out bool value) != GetValueResult.Success) || !value)
+            {
+                SublimeVSPackage.SettingsManager.SetValueAsync(firstTimeRunSettingName, true, isMachineLocal: true);
+                ApplyFirstTimeSettings();
+            }
+
+        }
+
+        private void ApplyFirstTimeSettings()
+        {
+            //Ask user if they want to apply Sublime settings
+            const string MessageText =
+                "Congratulations! Sublime VS Extension has been installed.\n" +
+                "\n" +
+                "Apply the following settings:\n" +
+                "- Turn on Map Mode Scrollbar (Wide)\n" +
+                "- Assign shortcut Ctrl+P to GoToFile\n" +
+                "- Assign shortcut Ctrl+Shift+P to Command Window\n" +
+                "\n" +
+                "Note: You can modify these settings later in Tools->Options";
+
+            if (MessageBox.Show(MessageText, "Apply SublimeVS Settings", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ApplySettings();
+            }
+        }
+
+        private void ApplySettings()
+        {
+            try
+            {
+                var provider = (System.IServiceProvider)this;
+                var dte2 = (DTE2)(provider.GetService(typeof(DTE)));
+
+                ActivateMapModeScrollbar(dte2);
+                ApplyShortcuts(dte2);
+                // TODO: Output to the status bar - "SublimeVS settings applied"
+                SublimeVSPackage.SettingsManager.SetValueAsync("SublimeSettingsApplied", true, isMachineLocal: true);
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.Message);
+            }
+        }
+
+        private void ActivateMapModeScrollbar(DTE2 dte2)
+        {
+            UpdateSetting(dte2, "TextEditor", "AllLanguages", "UseMapMode", true);
+            UpdateSetting(dte2, "TextEditor", "AllLanguages", "OverviewWidth", (short)83);
+        }
+
+        internal static void ApplyShortcuts(DTE2 dte2)
+        {
+            // Apply the shortcuts
+            Commands cmds = dte2.Commands;
+            //AddKeyBinding(cmds, "Edit.GoToFile", "Global::Ctrl+P");       // Cannot find this command when no solution open
+            AddKeyBinding(cmds, "View.CommandWindow", "Global::Ctrl+Shift+P");
+        }
+
+        private static void UpdateSetting(DTE2 dte2, string category, string page, string settingName, object value)
+        {
+            // Example: dte2.Properties["TextEditor", "General"].Item("TrackChanges").Value = true;
+            dte2.Properties[category, page].Item(settingName).Value = value;
+        }
+
+        private static void AddKeyBinding(Commands cmds, string vsCommandName, string keyBinding)
+        {
+            Command command = cmds.Item(vsCommandName);
+            command.Bindings = (object)AppendKeyboardBinding(command, keyBinding);
+        }
+
+        private static object[] AppendKeyboardBinding(Command command, string keyboardBindingDefn)
+        {
+            object[] oldBindings = (object[])command.Bindings;
+
+            // Check that keyboard binding is not already there
+            for (int i = 0; i < oldBindings.Length; i++)
+            {
+                if (keyboardBindingDefn.Equals(oldBindings[i]))
+                {
+                    // Exit early and return the existing bindings array if new keyboard binding is already there
+                    return oldBindings;
+                }
+            }
+
+            // Build new array with all the old bindings, plus the new one.
+            object[] newBindings = new object[oldBindings.Length + 1];
+            Array.Copy(oldBindings, newBindings, oldBindings.Length);
+            newBindings[newBindings.Length - 1] = keyboardBindingDefn;
+            return newBindings;
+        }
+
+        // A horrible hack but SVsSettingsPersistenceManager isn't public and we need something with the right GUID to get the service.
+        [Guid(SID_SVsSettingsPersistenceManager)]
+        private class SVsSettingsPersistenceManager
+        { }
+    }
+}
