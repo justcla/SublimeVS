@@ -62,6 +62,22 @@
     <Compile Include="SublimeVSPackage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EmbeddedExtensions\EasyMotion.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\MultiEditMode.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\ZenCoding.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\VSPackageInstaller.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
