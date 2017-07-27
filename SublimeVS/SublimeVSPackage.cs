@@ -38,7 +38,7 @@ namespace SublimeVS
             base.Initialize();
 
             // Check if we need to do first-time setup
-            const string firstTimeRunSettingName = "SublimeSettingsPrompted6";
+            const string firstTimeRunSettingName = "SublimeSettingsPrompted";
             if ((SublimeVSPackage.SettingsManager.TryGetValue(firstTimeRunSettingName, out bool value) != GetValueResult.Success) || !value)
             {
                 SublimeVSPackage.SettingsManager.SetValueAsync(firstTimeRunSettingName, true, isMachineLocal: true);
@@ -94,8 +94,10 @@ namespace SublimeVS
         {
             // Apply the shortcuts
             Commands cmds = dte2.Commands;
-            //AddKeyBinding(cmds, "Edit.GoToFile", "Global::Ctrl+P");       // Cannot find this command when no solution open
-            AddKeyBinding(cmds, "View.CommandWindow", "Global::Ctrl+Shift+P");
+            AddKeyBinding(cmds, "Edit.GoToFile", "Global", "Ctrl+P");
+            ReplaceKeyBinding(cmds, "Edit.GoToFile", "Text Editor", "Ctrl+P");  // Override any Text Editor binding for this Global shortcut
+            AddKeyBinding(cmds, "View.CommandWindow", "Global", "Ctrl+Shift+P");
+            ReplaceKeyBinding(cmds, "View.CommandWindow", "Text Editor", "Ctrl+Shift+P");  // Override any Text Editor binding for this Global shortcut
         }
 
         private static void UpdateSetting(DTE2 dte2, string category, string page, string settingName, object value)
@@ -104,10 +106,17 @@ namespace SublimeVS
             dte2.Properties[category, page].Item(settingName).Value = value;
         }
 
-        private static void AddKeyBinding(Commands cmds, string vsCommandName, string keyBinding)
+        private static void AddKeyBinding(Commands cmds, string vsCommandName, string scope, string keyBinding)
         {
             Command command = cmds.Item(vsCommandName);
-            command.Bindings = (object)AppendKeyboardBinding(command, keyBinding);
+            command.Bindings = (object)AppendKeyboardBinding(command, $"{scope}::{keyBinding}");
+        }
+
+        private static void ReplaceKeyBinding(Commands cmds, string vsCommandName, string scope, string keyBinding)
+        {
+            Command command = cmds.Item(vsCommandName);
+            // Build new array with just the new binding.
+            command.Bindings = new object[] { $"{scope}::{keyBinding}" };
         }
 
         private static object[] AppendKeyboardBinding(Command command, string keyboardBindingDefn)
