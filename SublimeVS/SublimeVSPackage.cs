@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace SublimeVS
 {
@@ -62,21 +63,12 @@ namespace SublimeVS
                 "\n" +
                 "Apply the following settings:\n" +
                 "- Turn on Map Mode Scrollbar (Wide)\n" +
-                "- Assign shortcut Ctrl+P to GoToFile\n" +
-                "- Assign shortcut Ctrl+Shift+P to Command Window\n" +
+                "- Apply Sublime Text keyboard shortcuts\n" +
                 "\n" +
                 "Note: You can modify these settings later in Tools->Options";
 
             // Show a message box to prove we were here
-            int result = VsShellUtilities.ShowMessageBox(
-                this,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_WARNING,
-                OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-            //if (MessageBox.Show(message, title, MessageBoxButtons.OKCancel) == DialogResult.OK)
-            if (result == 1)
+            if (MessageBox.Show(message, title, MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 ApplySettings();
             }
