@@ -80,6 +80,7 @@
     </Content>
     <Content Include="Shortcuts\SublimeShortcuts.vssettings">
       <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="EmbeddedExtensions\VSTricks.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -222,9 +223,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

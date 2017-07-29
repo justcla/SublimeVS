@@ -43,12 +43,12 @@ namespace SublimeVS
             base.Initialize();
 
             // Check if we need to do first-time setup
-            //const string firstTimeRunSettingName = "SublimeSettingsPrompted";
-            //if ((SublimeVSPackage.SettingsManager.TryGetValue(firstTimeRunSettingName, out bool value) != GetValueResult.Success) || !value)
-            //{
-                //SublimeVSPackage.SettingsManager.SetValueAsync(firstTimeRunSettingName, true, isMachineLocal: true);
-                //ApplyFirstTimeSettings();
-            //}
+            const string firstTimeRunSettingName = "SublimeSettingsPrompted";
+            if ((SublimeVSPackage.SettingsManager.TryGetValue(firstTimeRunSettingName, out bool value) != GetValueResult.Success) || !value)
+            {
+                SublimeVSPackage.SettingsManager.SetValueAsync(firstTimeRunSettingName, true, isMachineLocal: true);
+                ApplyFirstTimeSettings();
+            }
 
         }
 
