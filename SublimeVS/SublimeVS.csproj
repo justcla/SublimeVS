@@ -34,7 +34,7 @@
     <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
     <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+  <PropertyGroup>
     <StartAction>Program</StartAction>
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
     <StartArguments>/rootsuffix Exp</StartArguments>
@@ -80,6 +80,10 @@
     </Content>
     <Content Include="Shortcuts\SublimeShortcuts.vssettings">
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="EmbeddedExtensions\VSTricks.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>

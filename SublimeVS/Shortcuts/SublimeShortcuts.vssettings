@@ -16,6 +16,7 @@
           <Shortcut Command="Edit.GoToFile" Scope="Global">Ctrl+P</Shortcut>
           <Shortcut Command="View.CommandWindow" Scope="Global">Ctrl+Shift+P</Shortcut>   <!--Should be Command Palete-->
           <Shortcut Command="File.OpenFile" Scope="Global">Ctrl+O</Shortcut>
+          <RemoveShortcut Command="Edit.SelectCurrentWord" Scope="Text Editor">Ctrl+W</RemoveShortcut>  <!--Enables Ctrl+W = Close Document at Global scope-->
           <Shortcut Command="Window.CloseDocumentWindow" Scope="Global">Ctrl+W</Shortcut>
           <Shortcut Command="Edit.IncreaseLineIndent" Scope="Text Editor">Ctrl+]</Shortcut>
           <Shortcut Command="Edit.DecreaseLineIndent" Scope="Text Editor">Ctrl+[</Shortcut>

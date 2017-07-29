@@ -1,13 +1,16 @@
-﻿using System;
+﻿using EnvDTE;
+using EnvDTE80;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Settings;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
-using EnvDTE80;
-using EnvDTE;
-using Microsoft.VisualStudio.Settings;
-using System.Windows.Forms;
 
 namespace SublimeVS
 {
@@ -21,6 +24,8 @@ namespace SublimeVS
     {
         public const string PackageGuidString = "b303a85f-1765-435e-8b09-b600853edbef";
         private const string SID_SVsSettingsPersistenceManager = "9B164E40-C3A2-4363-9BC5-EB4039DEF653";
+
+        private const string settingsFileName = @"Shortcuts\SublimeShortcuts.vssettings";
 
         public static ISettingsManager SettingsManager { get; private set; }
 
@@ -38,19 +43,21 @@ namespace SublimeVS
             base.Initialize();
 
             // Check if we need to do first-time setup
-            const string firstTimeRunSettingName = "SublimeSettingsPrompted";
-            if ((SublimeVSPackage.SettingsManager.TryGetValue(firstTimeRunSettingName, out bool value) != GetValueResult.Success) || !value)
-            {
-                SublimeVSPackage.SettingsManager.SetValueAsync(firstTimeRunSettingName, true, isMachineLocal: true);
-                ApplyFirstTimeSettings();
-            }
+            //const string firstTimeRunSettingName = "SublimeSettingsPrompted";
+            //if ((SublimeVSPackage.SettingsManager.TryGetValue(firstTimeRunSettingName, out bool value) != GetValueResult.Success) || !value)
+            //{
+                //SublimeVSPackage.SettingsManager.SetValueAsync(firstTimeRunSettingName, true, isMachineLocal: true);
+                //ApplyFirstTimeSettings();
+            //}
 
         }
 
         private void ApplyFirstTimeSettings()
         {
+
             //Ask user if they want to apply Sublime settings
-            const string MessageText =
+            const string title = "Extensions for Accessibility in Visual Studio";
+            const string message =
                 "Congratulations! Sublime VS Extension has been installed.\n" +
                 "\n" +
                 "Apply the following settings:\n" +
@@ -60,7 +67,16 @@ namespace SublimeVS
                 "\n" +
                 "Note: You can modify these settings later in Tools->Options";
 
-            if (MessageBox.Show(MessageText, "Apply SublimeVS Settings", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            // Show a message box to prove we were here
+            int result = VsShellUtilities.ShowMessageBox(
+                this,
+                message,
+                title,
+                OLEMSGICON.OLEMSGICON_WARNING,
+                OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            //if (MessageBox.Show(message, title, MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (result == 1)
             {
                 ApplySettings();
             }
@@ -74,7 +90,8 @@ namespace SublimeVS
                 var dte2 = (DTE2)(provider.GetService(typeof(DTE)));
 
                 ActivateMapModeScrollbar(dte2);
-                ApplyShortcuts(dte2);
+                //ApplyShortcuts(dte2);
+                ImportSublimeShortcuts();
                 // TODO: Output to the status bar - "SublimeVS settings applied"
                 SublimeVSPackage.SettingsManager.SetValueAsync("SublimeSettingsApplied", true, isMachineLocal: true);
             }
@@ -84,10 +101,30 @@ namespace SublimeVS
             }
         }
 
+        private void ImportSublimeShortcuts()
+        {
+            if (this.GetService(typeof(SVsUIShell)) is IVsUIShell shell)
+            {
+                // import the settings file into Visual Studio
+                var asmDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var settingsFilePath = Path.Combine(asmDirectory, settingsFileName);
+                var group = VSConstants.CMDSETID.StandardCommandSet2K_guid;
+
+                object arguments = string.Format(CultureInfo.InvariantCulture, "-import:\"{0}\"", settingsFilePath);
+                shell.PostExecCommand(ref group, (uint)VSConstants.VSStd2KCmdID.ManageUserSettings, 0, ref arguments);
+            }
+        }
+
         private void ActivateMapModeScrollbar(DTE2 dte2)
         {
             UpdateSetting(dte2, "TextEditor", "AllLanguages", "UseMapMode", true);
             UpdateSetting(dte2, "TextEditor", "AllLanguages", "OverviewWidth", (short)83);
+        }
+
+        private static void UpdateSetting(DTE2 dte2, string category, string page, string settingName, object value)
+        {
+            // Example: dte2.Properties["TextEditor", "General"].Item("TrackChanges").Value = true;
+            dte2.Properties[category, page].Item(settingName).Value = value;
         }
 
         internal static void ApplyShortcuts(DTE2 dte2)
@@ -98,12 +135,6 @@ namespace SublimeVS
             ReplaceKeyBinding(cmds, "Edit.GoToFile", "Text Editor", "Ctrl+P");  // Override any Text Editor binding for this Global shortcut
             AddKeyBinding(cmds, "View.CommandWindow", "Global", "Ctrl+Shift+P");
             ReplaceKeyBinding(cmds, "View.CommandWindow", "Text Editor", "Ctrl+Shift+P");  // Override any Text Editor binding for this Global shortcut
-        }
-
-        private static void UpdateSetting(DTE2 dte2, string category, string page, string settingName, object value)
-        {
-            // Example: dte2.Properties["TextEditor", "General"].Item("TrackChanges").Value = true;
-            dte2.Properties[category, page].Item(settingName).Value = value;
         }
 
         private static void AddKeyBinding(Commands cmds, string vsCommandName, string scope, string keyBinding)
