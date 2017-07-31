@@ -19,48 +19,20 @@ namespace VSSetingsManager
     internal sealed class VSSettingsManager
     {
         /// <summary>
-        /// Command ID.
+        /// Match with symbols in VSCT file.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public static readonly Guid VSSettingsManagerCmdSetGuid = new Guid("cca0811b-addf-4d7b-9dd6-fdb412c44d8a");
+        public const int ApplyShortcutsCmdId = 0x0100;
+        public const int BackupShortcutsCmdId = 0x0200;
+        public const int RestoreShortcutsCmdId = 0x0300;
+        public const int ResetShortcutsCmdId = 0x0400;
 
-        /// <summary>
-        /// Command menu group (command set GUID).
-        /// </summary>
-        public static readonly Guid CommandSet = new Guid("cca0811b-addf-4d7b-9dd6-fdb412c44d8a");
+        private const string SublimeSettingsFileName = @"Shortcuts\SublimeShortcuts.vssettings";
 
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
         private readonly Package package;
-
-        private const string SublimeSettingsFileName = @"Shortcuts\SublimeShortcuts.vssettings";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VSSettingsManager"/> class.
-        /// Adds our command handlers for menu (commands must exist in the command table file)
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
-        private VSSettingsManager(Package package)
-        {
-            // Register this command with the Global Command Service
-            this.package = package ?? throw new ArgumentNullException("package");
-
-            if (ServiceProvider.GetService(typeof(IMenuCommandService)) is OleMenuCommandService commandService)
-            {
-                var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
-                commandService.AddCommand(menuItem);
-            }
-        }
-
-        /// <summary>
-        /// Gets the instance of the command.
-        /// </summary>
-        public static VSSettingsManager Instance
-        {
-            get;
-            private set;
-        }
 
         /// <summary>
         /// Gets the service provider from the owner package.
@@ -74,6 +46,15 @@ namespace VSSetingsManager
         }
 
         /// <summary>
+        /// Gets the instance of the command.
+        /// </summary>
+        public static VSSettingsManager Instance
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
@@ -83,16 +64,57 @@ namespace VSSetingsManager
         }
 
         /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
+        /// Initializes a new instance of the <see cref="VSSettingsManager"/> class.
+        /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
-        private void MenuItemCallback(object sender, EventArgs e)
+        /// <param name="package">Owner package, not null.</param>
+        private VSSettingsManager(Package package)
+        {
+            // Register this command with the Global Command Service
+            this.package = package ?? throw new ArgumentNullException("package");
+
+            if (ServiceProvider.GetService(typeof(IMenuCommandService)) is OleMenuCommandService commandService)
+            {
+                commandService.AddCommand(CreateMenuItem(ApplyShortcutsCmdId, this.ApplySettings));
+                commandService.AddCommand(CreateMenuItem(BackupShortcutsCmdId, this.BackupShortcuts));
+                commandService.AddCommand(CreateMenuItem(RestoreShortcutsCmdId, this.RestoreShortcuts));
+                commandService.AddCommand(CreateMenuItem(ResetShortcutsCmdId, this.ResetShortcuts));
+            }
+        }
+
+        private MenuCommand CreateMenuItem(int cmdId, EventHandler menuItemCallback)
+        {
+            return new MenuCommand(menuItemCallback, new CommandID(VSSettingsManagerCmdSetGuid, cmdId));
+        }
+
+        private void ApplySettings(object sender, EventArgs e)
         {
             //ShowDefaultAlert();
             ApplySublimeShortcuts();
+        }
+
+        private void BackupShortcuts(object sender, EventArgs e)
+        {
+            const string Caption = "Backup Shortcuts?";
+            const string Text = "Feature not implemented yet.\n" +
+                "Go to Tools->Import and Export settings...";
+            MessageBox.Show(Text, Caption, MessageBoxButtons.OK);
+        }
+
+        private void RestoreShortcuts(object sender, EventArgs e)
+        {
+            const string Caption = "Restore Shortcuts?";
+            const string Text = "Feature not implemented yet.\n" +
+                "Go to Tools->Import and Export settings...";
+            MessageBox.Show(Text, Caption, MessageBoxButtons.OK);
+        }
+
+        private void ResetShortcuts(object sender, EventArgs e)
+        {
+            const string Caption = "Reset Shortcuts?";
+            const string Text = "Feature not implemented yet.\n" +
+                "Go to Tools->Import and Export settings...";
+            MessageBox.Show(Text, Caption, MessageBoxButtons.OK);
         }
 
         //------------ Shortcut Settings --------------
