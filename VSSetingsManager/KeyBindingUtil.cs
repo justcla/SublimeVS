@@ -1,7 +1,7 @@
 ﻿using EnvDTE;
 using System;
 
-namespace VSSetingsManager
+namespace VSSettingsManager
 {
     class KeyBindingUtil
     {

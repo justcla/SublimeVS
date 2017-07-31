@@ -11,12 +11,12 @@ using EnvDTE80;
 using EnvDTE;
 using System.Diagnostics;
 
-namespace VSSetingsManager
+namespace VSSettingsManager
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class VSSettingsManager
+    public sealed class VSSettingsManager
     {
         /// <summary>
         /// Match with symbols in VSCT file.
