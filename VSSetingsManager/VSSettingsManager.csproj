@@ -68,7 +68,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\VSSettingsManager.png" />
     <Content Include="Resources\VSSettingsManagerPackage.ico" />
     <Content Include="Shortcuts\SublimeShortcuts.vssettings">
       <SubType>Designer</SubType>

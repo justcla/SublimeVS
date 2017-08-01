@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-  <Metadata>
-    <Identity Id="SublimeVS.7b1efb7d-cb70-46f9-a1aa-90b14f4a7b34" Version="1.0" Language="en-US" Publisher="Justin Clareburt" />
-    <DisplayName>SublimeVS</DisplayName>
-    <Description xml:space="preserve">Provides some Sublime Text features in Visual Studio</Description>
-  </Metadata>
-  <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,16.0)" />
-  </Installation>
-  <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-    <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
-    <Dependency d:Source="File" DisplayName="EasyMotion" Id="5bb019ad-a18e-4c86-af3c-27217853df95" Version="[1.0.2,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\EasyMotion.vsix" />
-    <Dependency d:Source="File" DisplayName="Multi Edit Mode" Id="MultiEdit..c6fb8e57-fde0-4987-8e7a-5ca9b4beddcb" Version="[1.8.15,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\MultiEditMode.vsix" />
-    <Dependency d:Source="File" DisplayName="ZenCoding" Id="9514d70e-a7b1-4876-847d-b0d2ad0962bf" Version="[1.2.11,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\ZenCoding.vsix" />
-    <Dependency d:Source="File" DisplayName="VSPackageInstaller" Id="VSPackageInstaller.07350b80-a5c5-4fa7-9433-96e9088d0dfd" Version="[1.11,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\VSPackageInstaller.vsix" />
-    <Dependency d:Source="File" DisplayName="VSTricks" Id="37362471-59da-4a68-8288-f3d43648d490" Version="[1.9,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\VSTricks.vsix" />
-  </Dependencies>
-  <Assets>
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-  </Assets>
-  <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
-  </Prerequisites>
+    <Metadata>
+        <Identity Id="SublimeVS.7b1efb7d-cb70-46f9-a1aa-90b14f4a7b34" Version="1.0.1" Language="en-US" Publisher="Justin Clareburt" />
+        <DisplayName>SublimeVS</DisplayName>
+        <Description xml:space="preserve">Provides some Sublime Text features in Visual Studio</Description>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,16.0)" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
+        <Dependency d:Source="File" DisplayName="EasyMotion" Id="5bb019ad-a18e-4c86-af3c-27217853df95" Version="[1.0.2,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\EasyMotion.vsix" />
+        <Dependency d:Source="File" DisplayName="ZenCoding" Id="9514d70e-a7b1-4876-847d-b0d2ad0962bf" Version="[1.2.11,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\ZenCoding.vsix" />
+        <Dependency d:Source="File" DisplayName="VSPackageInstaller" Id="VSPackageInstaller.07350b80-a5c5-4fa7-9433-96e9088d0dfd" Version="[1.11,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\VSPackageInstaller.vsix" />
+        <Dependency d:Source="File" DisplayName="VSTricks" Id="37362471-59da-4a68-8288-f3d43648d490" Version="[1.9,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\VSTricks.vsix" />
+        <Dependency d:Source="File" DisplayName="MixEdit" Id="cea4a802-b0ff-42bb-bc3a-344c79408279" Version="[1.1.68,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\MixEdit.vsix" />
+    </Dependencies>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
 </PackageManifest>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <!--The Commands section is where commands, menus, and menu groups are defined.
+      This section uses a Guid to identify the package that provides the command defined inside it. -->
+  <Commands package="guidSublimeVSPackage">
+
+    <!-- In this section you can define new menu groups. A menu group is a container for
+         other menus or buttons (commands); from a visual point of view you can see the
+         group as the part of a menu contained between two lines. The parent of a group
+         must be a menu. -->
+    <Groups>
+      <Group guid="guidSublimeVSCmdSet" id="SublimeMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      </Group>
+    </Groups>
+
+    <!--Buttons section. -->
+    <Buttons>
+      <Button guid="guidSublimeVSCmdSet" id="ApplySettingsCmdId" priority="0x0100" type="Button">
+        <Parent guid="guidSublimeVSCmdSet" id="SublimeMenuGroup" />
+        <Strings>
+          <ButtonText>Apply SublimeVS Settings...</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+
+  </Commands>
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidSublimeVSPackage" value="{10faf7a3-f1bb-4836-9e6b-b5f52bd88031}" />
+
+    <!-- This is the guid used to group the menu commands together -->
+    <GuidSymbol name="guidSublimeVSCmdSet" value="{741d3ce4-bc84-49ae-8da8-48c574b99dfb}">
+      <IDSymbol name="SublimeMenuGroup" value="0x1020" />
+      <IDSymbol name="ApplySettingsCmdId" value="0x0100" />
+    </GuidSymbol>
+
+  </Symbols>
+</CommandTable>

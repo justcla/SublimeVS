@@ -1,8 +1,10 @@
-﻿using Microsoft.VisualStudio.Settings;
+﻿using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace SublimeVS
 {
@@ -10,11 +12,14 @@ namespace SublimeVS
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(SublimeVSPackage.PackageGuidString)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class SublimeVSPackage : Package
     {
-        public const string PackageGuidString = "b303a85f-1765-435e-8b09-b600853edbef";
+        public const string PackageGuidString = "10faf7a3-f1bb-4836-9e6b-b5f52bd88031";
         private const string SID_SVsSettingsPersistenceManager = "9B164E40-C3A2-4363-9BC5-EB4039DEF653";
+
+        private const string SublimeSettingsFileName = @"Shortcuts\SublimeShortcuts.vssettings";
 
         public static ISettingsManager SettingsManager { get; private set; }
 
@@ -28,8 +33,45 @@ namespace SublimeVS
         /// </summary>
         protected override void Initialize()
         {
+            // Initialize settings manager (TODO: could be done lazily on get)
+            SettingsManager = (ISettingsManager)GetGlobalService(typeof(SVsSettingsPersistenceManager));
+
             base.Initialize();
+            SublimeSettingsManager.Initialize(this);
+            CheckFirstTimeSetup();
         }
 
+        private void CheckFirstTimeSetup()
+        {
+            // Check if we need to do first-time setup
+            const string firstTimeRunSettingName = "SublimeVSSetupAck02";
+            if ((SettingsManager.TryGetValue(firstTimeRunSettingName, out bool value) != GetValueResult.Success) || !value)
+            {
+                const string title = "Sublime VS - First Time Setup";
+                const string message =
+                    "Congratulations! Sublime VS Extension has been installed.\n" +
+                    "\n" +
+                    "You will now be prompted to apply the following settings:\n" +
+                    "- Turn on Map Mode Scrollbar (Wide)\n" +
+                    "- Apply Sublime Text keyboard shortcuts\n" +
+                    "\n" +
+                    "Note: You can modify these settings later in Tools->Options\n" +
+                    "\n" +
+                    "Click Cancel to Show this dialog again at next startup.";
+
+                if (MessageBox.Show(message, title, MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    // Apply First Time Settings();
+                    SettingsManager.SetValueAsync(firstTimeRunSettingName, true, isMachineLocal: true);
+
+                    SublimeSettingsManager.Instance.ApplySublimeVSSettings();
+                }
+            }
+        }
+
+        // A horrible hack but SVsSettingsPersistenceManager isn't public and we need something with the right GUID to get the service.
+        [Guid(SID_SVsSettingsPersistenceManager)]
+        private class SVsSettingsPersistenceManager
+        { }
     }
 }
