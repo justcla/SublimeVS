@@ -8,18 +8,17 @@ using Microsoft.VisualStudio;
 using System.IO;
 using System.Reflection;
 
-namespace VSSettingsManager
+namespace VSShortcutsManager
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    public sealed class VSSettingsManager
+    public sealed class VSShortcutsManager
     {
         /// <summary>
         /// Match with symbols in VSCT file.
         /// </summary>
-        public static readonly Guid VSSettingsManagerCmdSetGuid = new Guid("cca0811b-addf-4d7b-9dd6-fdb412c44d8a");
-        public const int ApplyShortcutsCmdId = 0x0100;
+        public static readonly Guid VSShortcutsManagerCmdSetGuid = new Guid("cca0811b-addf-4d7b-9dd6-fdb412c44d8a");
         public const int BackupShortcutsCmdId = 0x0200;
         public const int RestoreShortcutsCmdId = 0x0300;
         public const int ResetShortcutsCmdId = 0x0400;
@@ -27,6 +26,8 @@ namespace VSSettingsManager
         private const string BACKUP_FILE_PATH = "BackupFilePath";
         private const string MSG_CAPTION_RESTORE = "Restore Keyboard Shortcuts";
         private const string MSG_CAPTION_BACKUP = "Backup Keyboard Shortcuts";
+        private const string MSG_CAPTION_RESET = "Reset Keyboard Shortcuts";
+
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -47,7 +48,7 @@ namespace VSSettingsManager
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static VSSettingsManager Instance
+        public static VSShortcutsManager Instance
         {
             get;
             private set;
@@ -59,15 +60,15 @@ namespace VSSettingsManager
         /// <param name="package">Owner package, not null.</param>
         public static void Initialize(Package package)
         {
-            Instance = new VSSettingsManager(package);
+            Instance = new VSShortcutsManager(package);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VSSettingsManager"/> class.
+        /// Initializes a new instance of the <see cref="VSShortcutsManager"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private VSSettingsManager(Package package)
+        private VSShortcutsManager(Package package)
         {
             // Register this command with the Global Command Service
             this.package = package ?? throw new ArgumentNullException("package");
@@ -82,7 +83,7 @@ namespace VSSettingsManager
 
         private MenuCommand CreateMenuItem(int cmdId, EventHandler menuItemCallback)
         {
-            return new MenuCommand(menuItemCallback, new CommandID(VSSettingsManagerCmdSetGuid, cmdId));
+            return new MenuCommand(menuItemCallback, new CommandID(VSShortcutsManagerCmdSetGuid, cmdId));
         }
 
         private void BackupShortcuts(object sender, EventArgs e)
@@ -97,10 +98,9 @@ namespace VSSettingsManager
 
         private void ResetShortcuts(object sender, EventArgs e)
         {
-            const string Caption = "Reset Shortcuts?";
-            const string Text = "Feature not implemented yet.\n" +
-                "Go to Tools->Import and Export settings...";
-            MessageBox.Show(Text, Caption, MessageBoxButtons.OK);
+            const string Text = "Feature not implemented yet.\n\n" +
+                "Look for Reset under Tools->Options; Environment->Keyboard";
+            MessageBox.Show(Text, MSG_CAPTION_RESET, MessageBoxButtons.OK);
         }
 
         //-------- Backup Shortcuts --------
@@ -204,7 +204,7 @@ namespace VSSettingsManager
         {
             try
             {
-                VSSettingsManagerPackage.SettingsManager.SetValueAsync(BACKUP_FILE_PATH, exportFilePath, isMachineLocal: true);
+                VSShortcutsManagerPackage.SettingsManager.SetValueAsync(BACKUP_FILE_PATH, exportFilePath, isMachineLocal: true);
             }
             catch (Exception e)
             {
@@ -214,7 +214,7 @@ namespace VSSettingsManager
 
         private string GetSavedBackupFilePath()
         {
-            VSSettingsManagerPackage.SettingsManager.TryGetValue(BACKUP_FILE_PATH, out string backupFilePath);
+            VSShortcutsManagerPackage.SettingsManager.TryGetValue(BACKUP_FILE_PATH, out string backupFilePath);
             return backupFilePath;
         }
 

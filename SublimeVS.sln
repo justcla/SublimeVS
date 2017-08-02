@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26711.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SublimeVS", "SublimeVS\SublimeVS.csproj", "{9933CE6C-BBDF-431E-B996-8D7D3A57A974}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSSettingsManager", "VSSetingsManager\VSSettingsManager.csproj", "{618D5D4B-6C39-4D54-AA47-6EFA7735CB15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSShortcutsManager", "VSShortcutsManager\VSShortcutsManager.csproj", "{618D5D4B-6C39-4D54-AA47-6EFA7735CB15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

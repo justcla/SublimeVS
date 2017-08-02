@@ -5,15 +5,15 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Settings;
 
-namespace VSSettingsManager
+namespace VSShortcutsManager
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(VSSettingsManagerPackage.PackageGuidString)]
+    [Guid(VSShortcutsManagerPackage.PackageGuidString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    public sealed class VSSettingsManagerPackage : Package
+    public sealed class VSShortcutsManagerPackage : Package
     {
         /// <summary>
         /// VSSettingsManagerPackage GUID string.
@@ -23,7 +23,7 @@ namespace VSSettingsManager
         private const string SID_SVsSettingsPersistenceManager = "9B164E40-C3A2-4363-9BC5-EB4039DEF653";
         public static ISettingsManager SettingsManager { get; private set; }
 
-        public VSSettingsManagerPackage()
+        public VSShortcutsManagerPackage()
         {
         }
 
@@ -36,8 +36,8 @@ namespace VSSettingsManager
             // Initialize settings manager (TODO: could be done lazily on get)
             SettingsManager = (ISettingsManager)GetGlobalService(typeof(SVsSettingsPersistenceManager));
 
-            // Adds commands handlers for the VS Settings operations (Apply, Backup, Restore, Reset)
-            VSSettingsManager.Initialize(this);
+            // Adds commands handlers for the VS Shortcuts operations (Apply, Backup, Restore, Reset)
+            VSShortcutsManager.Initialize(this);
             base.Initialize();
         }
 
