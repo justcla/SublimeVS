@@ -17,6 +17,7 @@
         <Dependency d:Source="File" DisplayName="VSPackageInstaller" Id="VSPackageInstaller.07350b80-a5c5-4fa7-9433-96e9088d0dfd" Version="[1.11,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\VSPackageInstaller.vsix" />
         <Dependency d:Source="File" DisplayName="VSTricks" Id="37362471-59da-4a68-8288-f3d43648d490" Version="[1.9,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\VSTricks.vsix" />
         <Dependency d:Source="File" DisplayName="MixEdit" Id="cea4a802-b0ff-42bb-bc3a-344c79408279" Version="[1.1.68,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\MixEdit.vsix" />
+        <Dependency d:Source="File" DisplayName="VS Shortcuts Manager" Id="VSShortcutsManager.d8578b8b-cb70-49ee-b009-9e659c413f4b" Version="[1.0.0,2.0.0.0)" d:InstallSource="Embed" Location="EmbeddedExtensions\VSShortcutsManager.vsix" />
     </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
