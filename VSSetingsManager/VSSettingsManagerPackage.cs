@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Settings;
 
 namespace VSSettingsManager
 {
@@ -18,6 +19,9 @@ namespace VSSettingsManager
         /// VSSettingsManagerPackage GUID string.
         /// </summary>
         public const string PackageGuidString = "2145fd5c-c814-4772-b19d-b840113afede";
+        // Initialize settings manager (TODO: could be done lazily on get)
+        private const string SID_SVsSettingsPersistenceManager = "9B164E40-C3A2-4363-9BC5-EB4039DEF653";
+        public static ISettingsManager SettingsManager { get; private set; }
 
         public VSSettingsManagerPackage()
         {
@@ -29,10 +33,18 @@ namespace VSSettingsManager
         /// </summary>
         protected override void Initialize()
         {
+            // Initialize settings manager (TODO: could be done lazily on get)
+            SettingsManager = (ISettingsManager)GetGlobalService(typeof(SVsSettingsPersistenceManager));
+
             // Adds commands handlers for the VS Settings operations (Apply, Backup, Restore, Reset)
             VSSettingsManager.Initialize(this);
             base.Initialize();
         }
+
+        // A horrible hack but SVsSettingsPersistenceManager isn't public and we need something with the right GUID to get the service.
+        [Guid(SID_SVsSettingsPersistenceManager)]
+        private class SVsSettingsPersistenceManager
+        { }
 
     }
 }

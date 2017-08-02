@@ -27,19 +27,21 @@
         <Parent guid="guidVSSettingsManagerCmdSet" id="ShortcutsMenuGroup" />
         <Strings>
           <ButtonText>Backup Shortcuts</ButtonText>
-          <MenuText>Backup Shortcuts</MenuText>
+          <MenuText>&amp;Backup Shortcuts...</MenuText>
         </Strings>
       </Button>
       <Button guid="guidVSSettingsManagerCmdSet" id="RestoreShortcutsCmdId" priority="0x0300" type="Button">
         <Parent guid="guidVSSettingsManagerCmdSet" id="ShortcutsMenuGroup" />
         <Strings>
           <ButtonText>Restore Shortcuts</ButtonText>
+          <MenuText>&amp;Restore Shortcuts...</MenuText>
         </Strings>
       </Button>
       <Button guid="guidVSSettingsManagerCmdSet" id="ResetShortcutsCmdId" priority="0x0400" type="Button">
         <Parent guid="guidVSSettingsManagerCmdSet" id="ShortcutsMenuGroup" />
         <Strings>
           <ButtonText>Reset Shortcuts</ButtonText>
+          <MenuText>&amp;Reset Shortcuts...</MenuText>
         </Strings>
       </Button>
     </Buttons>
