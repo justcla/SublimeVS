@@ -83,10 +83,7 @@ namespace VSSettingsManager
 
         private void BackupShortcuts(object sender, EventArgs e)
         {
-            const string Caption = "Backup Shortcuts?";
-            const string Text = "Feature not implemented yet.\n" +
-                "Go to Tools->Import and Export settings...";
-            MessageBox.Show(Text, Caption, MessageBoxButtons.OK);
+            ExecuteBackupShortcuts();
         }
 
         private void RestoreShortcuts(object sender, EventArgs e)
@@ -105,7 +102,7 @@ namespace VSSettingsManager
             MessageBox.Show(Text, Caption, MessageBoxButtons.OK);
         }
 
-        //------------ Shortcut Settings --------------
+        //------------ Import Shortcuts --------------
 
         private void ImportUserSettings(string settingsFileName)
         {
@@ -120,6 +117,67 @@ namespace VSSettingsManager
                 shell.PostExecCommand(ref group, (uint)VSConstants.VSStd2KCmdID.ManageUserSettings, 0, ref arguments);
             }
         }
+
+        //-------- Backup Shortcuts --------
+
+        private void ExecuteBackupShortcuts()
+        {
+            IVsProfileDataManager vsProfileDataManager = (IVsProfileDataManager)ServiceProvider.GetService(typeof(SVsProfileDataManager));
+            var result = vsProfileDataManager.GetSettingsForExport(out IVsProfileSettingsTree profileSettingsTree);
+            if (result != VSConstants.S_OK)
+            {
+                // Error getting settings for export
+                // TODO: Handle error (Log?)
+                return;
+            }
+
+            // Enable only Keyboard in the Profile Settings Tree
+            EnableOnlyKeyboardSettingsForExport(profileSettingsTree);
+
+            // Get the filename to export to
+            string exportFilePath;
+            uint flags = (uint)__VSPROFILEGETFILENAME.PGFN_SAVECURRENT;
+            result = vsProfileDataManager.GetUniqueExportFileName(flags, out exportFilePath);
+
+            // Do the export
+            result = vsProfileDataManager.ExportSettings(exportFilePath, profileSettingsTree, out IVsSettingsErrorInformation errorInfo);
+            if (result == VSConstants.S_OK)
+            {
+                string Caption = "Backup Keyboard Shortcuts";
+                string Text = $"Your keyboard shortcuts have been backed up to the following file:\n\n{exportFilePath}";
+                MessageBox.Show(Text, Caption, MessageBoxButtons.OK);
+            }
+        }
+
+        private static void EnableOnlyKeyboardSettingsForExport(IVsProfileSettingsTree profileSettingsTree)
+        {
+            // Disable all settings for export
+            profileSettingsTree.SetEnabled(0, 1);
+            // Enable Keyboard settings for export
+            profileSettingsTree.FindChildTree("Environment_Group\\Environment_KeyBindings", out IVsProfileSettingsTree keyboardSettingsTree);
+            if (keyboardSettingsTree != null)
+            {
+                int enabledValue = 1;  // true
+                int setChildren = 0;  // true  (redundant)
+                keyboardSettingsTree.SetEnabled(enabledValue, setChildren);
+            }
+        }
+
+        //private static void GetNodeData(IVsProfileSettingsTree profileSettingsTree)
+        //{
+        //    profileSettingsTree.GetAlternatePath(out string altPath);
+        //    profileSettingsTree.GetCategory(out string category);
+        //    profileSettingsTree.GetDescription(out string descr);
+        //    profileSettingsTree.GetDisplayName(out string displayName);
+        //    profileSettingsTree.GetEnabled(out int enabled);
+        //    profileSettingsTree.GetChildCount(out int childCout);
+        //    profileSettingsTree.GetEnabledChildCount(out int enabledChildCount);
+        //    profileSettingsTree.GetFullPath(out string fullpath);
+        //    profileSettingsTree.GetIsPlaceholder(out int isPlaceholder);
+        //    profileSettingsTree.GetNameForID(out string nameForId);
+        //    profileSettingsTree.GetRegisteredName(out string registeredName);
+        //    profileSettingsTree.GetVisible(out int visible);
+        //}
 
     }
 }
