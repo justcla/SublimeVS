@@ -33,7 +33,8 @@
           <Shortcut Command="Edit.Redo" Scope="Global">Ctrl+Y</Shortcut>
           <Shortcut Command="Edit.GotoBrace" Scope="Text Editor">Ctrl+M</Shortcut>
           <Shortcut Command="MixEdit.SelectWord" Scope="Text Editor">Ctrl+D</Shortcut>
-          <Shortcut Command="Edit.SelectCurrentWord" Scope="Text Editor">Ctrl+D</Shortcut>
+          <Shortcut Command="MixEdit.SplitSelectionAcrossLines" Scope="Text Editor">Ctrl+Shift+L</Shortcut>
+          <Shortcut Command="Edit.SelectCurrentWord" Scope="Text Editor">Ctrl+D</Shortcut>  <!-- Fallback in case MixEdit is not installed -->
           <Shortcut Command="Edit.Find" Scope="Text Editor">Ctrl+F</Shortcut>
           <Shortcut Command="Edit.IncrementalSearch" Scope="Text Editor">Ctrl+E</Shortcut>
           <Shortcut Command="Edit.FindinFiles" Scope="Global">Ctrl+Shift+F</Shortcut>

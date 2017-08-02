@@ -80,6 +80,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="ReleaseNotes.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Shortcuts\SublimeShortcuts.vssettings">
       <SubType>Designer</SubType>
       <IncludeInVSIX>true</IncludeInVSIX>

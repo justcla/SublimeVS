@@ -1,0 +1,3 @@
+﻿SublimeVS
+
+2-Aug-2017 v1.0.3 Initial Release
