@@ -96,6 +96,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="EmbeddedExtensions\VSSettingsManager.vsix" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
