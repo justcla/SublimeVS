@@ -5,6 +5,7 @@
         <DisplayName>SublimeVS</DisplayName>
         <Description xml:space="preserve">Provides some Sublime Text features in Visual Studio</Description>
         <ReleaseNotes>ReleaseNotes.txt</ReleaseNotes>
+        <Icon>SublimeVS-icon.png</Icon>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,16.0)" />
