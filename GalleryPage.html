@@ -1,0 +1,217 @@
+﻿<h1><span style="color: #ff9900;">Sublime</span>&nbsp;<span style="color: #000000;">VS</span></h1>
+<p><strong>Visual Studio Extension that provides some capabilities similar to those in Sublime Text.</strong></p>
+<p>The SublimeVS extension bundles and installs several other extensions that provide some of the features found in Sublime Text.<br /> It also includes a keyboard shortcut mapping scheme, which, if applied, will import most of the common Sublime Text shortcuts.<br /> Together with the imported features, and the applied shortcuts, users familiar with the Sublime Text editing experience might feel more at home using Visual Studio.</p>
+<h3><span style="color: #5881c5;">Bundled Extensions</span></h3>
+<div>
+  <table border="1" cellspacing="5" cellpadding="0">
+    <tbody>
+      <tr>
+        <td>
+          <p>
+            <a href="https://marketplace.visualstudio.com/items?itemName=MarcoAlamia-CodingLabs.MixEdit">MixEdit</a> by Marco Alamia
+          </p>
+        </td>
+        <td>
+          <p>(Trialware) Provides Multi-cursor editing features</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <a href="https://marketplace.visualstudio.com/items?itemName=MadsKristensen.ZenCoding">Zen Coding</a> by Mads Kristensen
+          </p>
+        </td>
+        <td>
+          <p>Provides Emmet Snipets / HTML template coding</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <a href="https://marketplace.visualstudio.com/items?itemName=JaredParMSFT.EasyMotion">Easy Motion</a> by Jared Parsons
+          </p>
+        </td>
+        <td>
+          <p>Provides 3-key navigation anywhere in the viewable page</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <a href="https://marketplace.visualstudio.com/items?itemName=CodeMuncher1.VSTricks">VSTricks</a> by David Jackson
+          </p>
+        </td>
+        <td>
+          <p>Provides CamelCase navigation/selection/deletion,</p>
+          <p>plus Copy/Paste features including Duplicate Line/Selection</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <a href="https://marketplace.visualstudio.com/items?itemName=DanielGriffen.WhackWhackTerminal">Whack Whack Terminal</a> by Daniel Griffen
+          </p>
+        </td>
+        <td>
+          <p>Provides a hosted terminal emulator for executing fully interactive commands in a range of shells, including: PowerShell, Cmd, Git</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>VS Shortcuts Manager by Justin Clareburt</p>
+        </td>
+        <td>
+          <p>Provides menu items to easily backup and restore keyboard shortcuts</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h2><span style="color: #5881c5;">Main Features</span></h2>
+<h3>Mini-Map</h3>
+<p>Shows a colorful, compressed view of the current file in the scrollbar. Click anywhere on the bar to go directly to that point in the file.<br>
+Sets Map-Mode Scrollbar (Wide) available in Tools-&gt;Options;Text Editor-&gt;(Langauge)-&gt;Scroll Bars</p>
+<p>&nbsp;</p>
+<h3>Ctrl+P = Go To File</h3>
+<p>Find any file by filename or path. Search with CamelCase letters to find files by their significant parts.<br>
+Calls Edit.GoToFile, which opens the GoTo search box with file (path) filter applied ("f ").</p>
+<p>&nbsp;</p>
+<h3>Ctrl+Shift+P = Command Palette</h3>
+<p>Search for and activate any Visual Studio command by its command name.<br>
+Puts focus in Quick Launch. Type "@cmd " to activate the Command Palette.</p>
+<h2><span style="color: #5881c5;">Multi-Cursor Features</span></h2>
+<h3>Ctrl+D = Select Word / Select Next Match</h3>
+<p>Add next match to selection with additional caret. Selects word at caret if no selection.<br>
+Uses MixEdit.SelectWord</p>
+<p>&nbsp;</p>
+<h3><span>Ctrl+Shift+L = Split Multi-line Selection</span></h3>
+<p>Splits a single selection that spans multiple lines into multiple selections - one per line - each with their own caret.<br>
+Uses MixEdit.SplitSelectionAcrossLines</p>
+<p>&nbsp;</p>
+<h3><span>Alt+Click = Add Extra Caret</span></h3>
+<p>Hold Alt and click anywhere in the file to add additional carets and perform editing in multiple places at once.<br>
+Uses Alt+Click command handler in Mix Edit.</p>
+<h2><span style="color: #5881c5;">Navigation Features</span></h2>
+<h3>Alt+Key = Sub-word Navigation/Selection/Deletion</h3>
+<p>When holding the Alt key, caret stops at the next capital letter in CamelCase words.</p>
+<ul type="disc">
+<li><span>Navigate sub-words with Alt+Right/Left</span> </li>
+<li><span>Select sub-words with Shift+Alt+Right/Left</span> </li>
+<li><span>Delete sub-words with Alt+Backspace and Alt+Delete</span> </li>
+</ul>
+<p>Uses Sub-word navigation commands available in VSTricks (ie. Edit.SubWordNext, Edit.SubWordDeleteToStart)<br>
+Note: Use Ctrl+Right/Left to navigate a whole word at a time.</p>
+<h2><span style="color: #5881c5;">Sublime Keyboard Shortcuts</span></h2>
+<p>You can apply the Sublime keyboard shortcuts from "Tools-&gt;Apply Sublime Settings&hellip;".</p>
+<p><strong>Beware:</strong> Some mappings override popular Visual Studio shortcuts. (ie. F11 = Full screen takes over default mapping for Debug.StepInto)</br>
+Go to Tools->Options;Environment->Keyboard to update keybindings for overridden shortcuts.
+</p>
+<p>See <a href="https://github.com/justcla/SublimeVS/blob/master/SublimeVS/Shortcuts/SublimeShortcuts.vssettings"> keyboard shortcut reference</a> for a complete list of mapped shortcuts.</p>
+<table border="1" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td>
+        <p>Ctrl+P</p>
+      </td>
+      <td>
+        <p>Go To File/Path ("f " filter)</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+R</p>
+      </td>
+      <td>
+        <p>Go To Symbol ("@" filter)</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+D</p>
+      </td>
+      <td>
+        <p>Multiple selection - Select next matching occurrence</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+Shift+D</p>
+      </td>
+      <td>
+        <p>Duplicate code</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Alt+-</p>
+      </td>
+      <td>
+        <p>Navigate Backward</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Shift+Alt+-</p>
+      </td>
+      <td>
+        <p>Navigate Forward</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+W</p>
+      </td>
+      <td>
+        <p>Close File</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+Shift+K</p>
+      </td>
+      <td>
+        <p>Delete Line</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+Shift+L</p>
+      </td>
+      <td>
+        <p>Split multi-line selection</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+Shift+Up/Down</p>
+      </td>
+      <td>
+        <p>Move lines Up/Down</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+]</p>
+      </td>
+      <td>
+        <p>Increase Line Indent</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Ctrl+[</p>
+      </td>
+      <td>
+        <p>Decrease Line Indent</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>F11</p>
+      </td>
+      <td>
+        <p>Full screen</p>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -70,7 +70,6 @@
     </Content>
     <Content Include="EmbeddedExtensions\MultiEditMode.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="EmbeddedExtensions\ZenCoding.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -78,7 +77,6 @@
     </Content>
     <Content Include="EmbeddedExtensions\VSPackageInstaller.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -105,6 +103,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="EmbeddedExtensions\VSShortcutsManager.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\WhackWhackTerminal.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
