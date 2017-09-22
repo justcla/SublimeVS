@@ -82,6 +82,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Resources\sublimevs_72.png" />
+    <Content Include="Resources\sublimevs_90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Shortcuts\SublimeShortcuts.vssettings">
       <SubType>Designer</SubType>
       <IncludeInVSIX>true</IncludeInVSIX>
