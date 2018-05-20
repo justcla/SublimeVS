@@ -82,6 +82,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Resources\Market_SublimeVs_90x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\sublimevs_72.png" />
     <Content Include="Resources\sublimevs_90.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
