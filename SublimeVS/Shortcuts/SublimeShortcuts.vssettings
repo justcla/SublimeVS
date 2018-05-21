@@ -32,9 +32,14 @@
           <Shortcut Command="Edit.Undo" Scope="Global">Ctrl+Z</Shortcut>
           <Shortcut Command="Edit.Redo" Scope="Global">Ctrl+Y</Shortcut>
           <Shortcut Command="Edit.GotoBrace" Scope="Text Editor">Ctrl+M</Shortcut>
-          <Shortcut Command="MixEdit.SelectWord" Scope="Text Editor">Ctrl+D</Shortcut>
-          <Shortcut Command="MixEdit.SplitSelectionAcrossLines" Scope="Text Editor">Ctrl+Shift+L</Shortcut>
-          <Shortcut Command="Edit.SelectCurrentWord" Scope="Text Editor">Ctrl+D</Shortcut>  <!-- Fallback in case MixEdit is not installed -->
+          <!-- Multi-caret selection shortcuts -->
+          <Shortcut Command="SelectNextOccurrence.SelectNextOccurrence" Scope="Text Editor">Ctrl+D</Shortcut>
+          <Shortcut Command="Edit.SelectCurrentWord" Scope="Text Editor">Ctrl+D</Shortcut>  <!-- Fallback in case SelectNextOccurrence is not installed -->
+          <Shortcut Command="SelectNextOccurrence.ConvertSelectionToMultipleCursors" Scope="Text Editor">Ctrl+Shift+L</Shortcut>
+          <Shortcut Command="SelectNextOccurrence.SelectAllOccurrences" Scope="Text Editor">Alt+F3</Shortcut>
+          <Shortcut Command="SelectNextOccurrence.UndoOccurrence" Scope="Text Editor">Ctrl+U</Shortcut>
+          <Shortcut Command="SelectNextOccurrence.SkipOccurrence" Scope="Text Editor">Ctrl+K,Ctrl+D</Shortcut>
+          <!-- Other shortcuts -->
           <Shortcut Command="Edit.Find" Scope="Text Editor">Ctrl+F</Shortcut>
           <Shortcut Command="Edit.IncrementalSearch" Scope="Text Editor">Ctrl+E</Shortcut>
           <Shortcut Command="Edit.FindinFiles" Scope="Global">Ctrl+Shift+F</Shortcut>
