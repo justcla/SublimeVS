@@ -111,15 +111,16 @@
       <SubType>Designer</SubType>
     </VSCTCompile>
     <Content Include="EmbeddedExtensions\MixEdit.vsix" />
-    <Content Include="EmbeddedExtensions\VSShortcutsManager.vsix">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
+    <Content Include="EmbeddedExtensions\VSShortcutsManager.vsix" />
     <Content Include="EmbeddedExtensions\WhackWhackTerminal.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="EmbeddedExtensions\Select_Next_Occurrence_v1.2.23.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\KeyboardShortcutsManager.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
