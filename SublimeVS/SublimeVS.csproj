@@ -64,18 +64,6 @@
     <Compile Include="SublimeVSPackage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EmbeddedExtensions\EasyMotion.vsix">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="EmbeddedExtensions\MultiEditMode.vsix" />
-    <Content Include="EmbeddedExtensions\ZenCoding.vsix">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="EmbeddedExtensions\VSPackageInstaller.vsix">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -93,10 +81,6 @@
       <SubType>Designer</SubType>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="EmbeddedExtensions\VSTricks.vsix">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\SublimeVS-icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -110,17 +94,31 @@
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
-    <Content Include="EmbeddedExtensions\MixEdit.vsix" />
-    <Content Include="EmbeddedExtensions\VSShortcutsManager.vsix" />
-    <Content Include="EmbeddedExtensions\WhackWhackTerminal.vsix">
+    <Content Include="EmbeddedExtensions\EasyMotion-v1.0.3.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="EmbeddedExtensions\Select_Next_Occurrence_v1.2.23.vsix">
+    <Content Include="EmbeddedExtensions\SelectNextOccurrence-v1.3.150.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="EmbeddedExtensions\KeyboardShortcutsManager.vsix">
+    <Content Include="EmbeddedExtensions\ZenCoding_v1.2.12.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\VSTricks-v1.12.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\WhackWhackTerminal-v1.2.7.30024.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="EmbeddedExtensions\KeyboardShortcutsManager-v2.1.0.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="License.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

@@ -91,7 +91,9 @@
           <Shortcut Command="Window.PreviousTab" Scope="Global">Ctrl+PgUp</Shortcut>
           <Shortcut Command="Window.NextDocumentWindow" Scope="Global">Ctrl+Tab</Shortcut>
           <Shortcut Command="Window.PreviousDocumentWindow" Scope="Global">Ctrl+Shift+Tab</Shortcut>
-          <!--Unable to assign Toggle Line comment or Toggle Block comment. Must provide some shortcuts, since Ctrl+K,Ctrl+U is used above for MakeUpperCase-->
+          <Shortcut Command="Edit.ToggleLineComment" Scope="Text Editor">Ctrl+/</Shortcut>
+          <Shortcut Command="Edit.ToggleBlockComment" Scope="Text Editor">Ctrl+Shift+/</Shortcut>
+          <!--Before VS2017 v15.8, Toggle Line comment or Toggle Block comment are not available. Must provide some shortcuts, since Ctrl+K,Ctrl+U is used above for MakeUpperCase-->
           <Shortcut Command="Edit.CommentSelection" Scope="Text Editor">Ctrl+/</Shortcut>
           <Shortcut Command="Edit.UncommentSelection" Scope="Text Editor">Ctrl+Shift+/</Shortcut>
         </UserShortcuts>
