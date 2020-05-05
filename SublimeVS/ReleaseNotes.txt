@@ -1,5 +1,5 @@
 ﻿SublimeVS
-
-8-Aug-2017 v1.0.4 Added WhackWhackTerminal v0.2.4
-
-2-Aug-2017 v1.0.3 Initial Release
+05-May-2020 v1.2.0 Upgraded to VS2019
+21-May-2018 v1.1.0 Replaced MixEdit with SelectNextOccurrence
+08-Aug-2017 v1.0.4 Added WhackWhackTerminal v0.2.4
+02-Aug-2017 v1.0.3 Initial Release
