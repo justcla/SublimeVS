@@ -23,9 +23,9 @@ namespace SublimeVS
 
         private const string SublimeSettingsFileName = @"Shortcuts\SublimeShortcuts.vssettings";
 
-        private readonly Package package;
+        private readonly AsyncPackage package;
 
-        private IServiceProvider ServiceProvider
+        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider AsyncServiceProvider
         {
             get
             {
@@ -39,18 +39,25 @@ namespace SublimeVS
             private set;
         }
 
-        public static void Initialize(Package package)
+        public static async System.Threading.Tasks.Task InitializeAsync(AsyncPackage package)
         {
             Instance = new SublimeSettingsManager(package);
+            await Instance.InitializeAsync();
         }
 
-        private SublimeSettingsManager(Package package)
+        private SublimeSettingsManager(AsyncPackage package)
         {
             // Register this command with the Global Command Service
             this.package = package ?? throw new ArgumentNullException("package");
+        }
 
-            if (ServiceProvider.GetService(typeof(IMenuCommandService)) is OleMenuCommandService commandService)
+        public async System.Threading.Tasks.Task InitializeAsync()
+        {
+
+            if (await AsyncServiceProvider.GetServiceAsync(typeof(IMenuCommandService)) is OleMenuCommandService commandService)
             {
+                // Switch to main thread before calling AddCommand because it calls GetService
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 commandService.AddCommand(CreateMenuItem(ApplySettingsCmdId, this.ApplySublimeVSSettings));
             }
         }
@@ -62,16 +69,16 @@ namespace SublimeVS
 
         public void ApplySublimeVSSettings(object sender, EventArgs e)
         {
-            ApplySublimeVSSettings();
+            ApplySublimeVSSettingsAsync();
         }
 
-        public void ApplySublimeVSSettings()
+        public async System.Threading.Tasks.Task ApplySublimeVSSettingsAsync()
         {
-            // Offer to apply Sublime shortcut scheme
-            ApplyShortcuts("Sublime Text Shortcuts", SublimeSettingsFileName);
-
             // Offer to apply MiniMap (Map Mode Scrollbar)
             ApplyMiniMap();
+
+            // Offer to apply Sublime shortcut scheme
+            await ApplyShortcutsAsync("Sublime Text Shortcuts", SublimeSettingsFileName);
         }
 
         //-------- MiniMap Settings --------
@@ -101,7 +108,7 @@ namespace SublimeVS
         {
             try
             {
-                var dte2 = (DTE2)(ServiceProvider.GetService(typeof(DTE)));
+                var dte2 = (DTE2)AsyncServiceProvider.GetServiceAsync(typeof(DTE));
                 UpdateSetting(dte2, "TextEditor", "AllLanguages", "UseMapMode", true);
                 UpdateSetting(dte2, "TextEditor", "AllLanguages", "OverviewWidth", (short)83);
             }
@@ -119,13 +126,13 @@ namespace SublimeVS
 
         //------------ Shortcut Settings --------------
 
-        public void ApplyShortcuts(string shortcutSchemeName, string vssettingsFilename)
+        public async System.Threading.Tasks.Task ApplyShortcutsAsync(string shortcutSchemeName, string vssettingsFilename)
         {
 
             //Ask user if they want to apply shortcuts
             if (ConfirmApplyShortcuts(shortcutSchemeName))
             {
-                ImportUserSettings(vssettingsFilename);
+                await ImportUserSettingsAsync(vssettingsFilename);
             }
         }
 
@@ -140,9 +147,9 @@ namespace SublimeVS
             return MessageBox.Show(message, title, MessageBoxButtons.OKCancel) == DialogResult.OK;
         }
 
-        private void ImportUserSettings(string settingsFileName)
+        private async System.Threading.Tasks.Task ImportUserSettingsAsync(string settingsFileName)
         {
-            if (ServiceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell shell)
+            if (await AsyncServiceProvider.GetServiceAsync(typeof(SVsUIShell)) is IVsUIShell shell)
             {
                 // import the settings file into Visual Studio
                 var asmDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -150,6 +157,7 @@ namespace SublimeVS
                 var group = VSConstants.CMDSETID.StandardCommandSet2K_guid;
 
                 object arguments = string.Format(CultureInfo.InvariantCulture, "-import:\"{0}\"", settingsFilePath);
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 shell.PostExecCommand(ref group, (uint)VSConstants.VSStd2KCmdID.ManageUserSettings, 0, ref arguments);
             }
         }
