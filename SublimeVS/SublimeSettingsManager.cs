@@ -10,6 +10,7 @@ using Microsoft.VisualStudio;
 using System.IO;
 using System.Reflection;
 using System.ComponentModel.Design;
+using Task = System.Threading.Tasks.Task;
 
 namespace SublimeVS
 {
@@ -39,7 +40,7 @@ namespace SublimeVS
             private set;
         }
 
-        public static async System.Threading.Tasks.Task InitializeAsync(AsyncPackage package)
+        public static async Task InitializeAsync(AsyncPackage package)
         {
             Instance = new SublimeSettingsManager(package);
             await Instance.InitializeAsync();
@@ -51,7 +52,7 @@ namespace SublimeVS
             this.package = package ?? throw new ArgumentNullException("package");
         }
 
-        public async System.Threading.Tasks.Task InitializeAsync()
+        public async Task InitializeAsync()
         {
 
             if (await AsyncServiceProvider.GetServiceAsync(typeof(IMenuCommandService)) is OleMenuCommandService commandService)
@@ -72,10 +73,10 @@ namespace SublimeVS
             ApplySublimeVSSettingsAsync();
         }
 
-        public async System.Threading.Tasks.Task ApplySublimeVSSettingsAsync()
+        public async Task ApplySublimeVSSettingsAsync()
         {
             // Offer to apply MiniMap (Map Mode Scrollbar)
-            ApplyMiniMap();
+            await ApplyMiniMapAsync();
 
             // Offer to apply Sublime shortcut scheme
             await ApplyShortcutsAsync("Sublime Text Shortcuts", SublimeSettingsFileName);
@@ -83,12 +84,12 @@ namespace SublimeVS
 
         //-------- MiniMap Settings --------
 
-        public void ApplyMiniMap()
+        public async Task ApplyMiniMapAsync()
         {
             // Confirm with user before applying MiniMap
             if (ConfirmApplyMinimap())
             {
-                ApplyMapModeScrollbar();
+                await ApplyMapModeScrollbarAsync();
             }
 
         }
@@ -104,13 +105,15 @@ namespace SublimeVS
             return MessageBox.Show(message, title, MessageBoxButtons.OKCancel) == DialogResult.OK;
         }
 
-        private void ApplyMapModeScrollbar()
+        private async Task ApplyMapModeScrollbarAsync()
         {
             try
             {
-                var dte2 = (DTE2)AsyncServiceProvider.GetServiceAsync(typeof(DTE));
-                UpdateSetting(dte2, "TextEditor", "AllLanguages", "UseMapMode", true);
-                UpdateSetting(dte2, "TextEditor", "AllLanguages", "OverviewWidth", (short)83);
+                if (await AsyncServiceProvider.GetServiceAsync(typeof(DTE)) is DTE2 dte2)
+                {
+                    UpdateSetting(dte2, "TextEditor", "AllLanguages", "UseMapMode", true);
+                    UpdateSetting(dte2, "TextEditor", "AllLanguages", "OverviewWidth", (short)83);
+                }
             }
             catch (Exception e)
             {
@@ -126,7 +129,7 @@ namespace SublimeVS
 
         //------------ Shortcut Settings --------------
 
-        public async System.Threading.Tasks.Task ApplyShortcutsAsync(string shortcutSchemeName, string vssettingsFilename)
+        public async Task ApplyShortcutsAsync(string shortcutSchemeName, string vssettingsFilename)
         {
 
             //Ask user if they want to apply shortcuts
@@ -147,7 +150,7 @@ namespace SublimeVS
             return MessageBox.Show(message, title, MessageBoxButtons.OKCancel) == DialogResult.OK;
         }
 
-        private async System.Threading.Tasks.Task ImportUserSettingsAsync(string settingsFileName)
+        private async Task ImportUserSettingsAsync(string settingsFileName)
         {
             if (await AsyncServiceProvider.GetServiceAsync(typeof(SVsUIShell)) is IVsUIShell shell)
             {

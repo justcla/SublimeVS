@@ -1,4 +1,5 @@
 ﻿SublimeVS
+23-Nov-2021 v1.3.0 New version created just for VS2017-VS2019 support. New branch 'VS2019'
 06-May-2020 v1.2.1 Switched package loading to be Async (VS2019 requirement)
 05-May-2020 v1.2.0 Upgraded to VS2019
 21-May-2018 v1.1.0 Replaced MixEdit with SelectNextOccurrence
