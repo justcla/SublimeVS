@@ -101,7 +101,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="EmbeddedExtensions\KeyboardShortcutsManager-v3.0.0.vsix">
+    <Content Include="EmbeddedExtensions\KeyboardShortcutsManager-v3.1.4.vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -113,9 +113,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -137,7 +134,7 @@
       <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.31902.203" ExcludeAssets="runtime" />
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5233" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.5.4065" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
